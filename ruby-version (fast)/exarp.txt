@@ -1,0 +1,40 @@
+~~~ ausschnitt aus der notice.txt ~~~
+
+---ruby-client---
+die ruby version des clients ist anders als die exe version auf nichts anderes als geschwindigkeit zugeschnitten (hinzukommen kann man sie jetzt natuerlich
+auch auf allen ruby faehigen systemen nutzen wie z.b. linux, mac os x, win). die ruby verison kann und macht dementprechend nur das noetigste. sie kann alles
+"grundlegende" was das normale exarp auch kann: http & https surfen, traffic verschluesseln, individuelle server und clientinfos nutzen/verarbeiten...
+aber extras wie zb. das header modul, curing beim tunnelcrash etc. hat die ruby version nicht.
+
+screenshot: http://s7.directupload.net/images/140101/afdvv9mm.png
+
+getestet mit folgenden eigenschaften:
+system: windows 7 (sp1)
+cpu: amd fx(tm)-4100 quad-core processor (3,6ghz)
+ruby version: ruby 2.0.0p247 (2013-06-27) [i386-mingw32]
+browser: firefox 25.0.1
+verschluesselung: aes-256->base64
+anbindung: dsl 6000
+exap-link: lima-city.de
+
+---test mit mehreren requests (aes-256->base64 (&c))---
+domain: unnex.de (32 requests, insgesamt ~1,5mb)
+ohne exarp: ~2 sec
+exarp-exe: ~11-14 sec
+exarp-ruby: ~3 sec
+
+---test mit nur einem requets (aes-256->base64 (&c))---
+domain: unnex.de (1,5mb)
+ohne exarp: ~2 sec
+exarp-exe: ~30 sec
+exarp-ruby: ~4 sec
+
+...ein typischer example koennte z.b. so aussehen:
+ruby exarp.rb "http://kistega.lima-city.de/exarp.php?p=pw123&c" "exarp (ruby)" 127.0.0.1 80 1 "Test-123" 200 logfile.txt
+wobei am anfang der exarp-link steht, danach der useragent und dann die ip des tunnels. darauf folgt der port des tunnels, aes-password.
+sofern man die aes-vershcleusselung nutzt msus dieses passwort natuerlich mit dem in der php-datei angegebenen pw uebereinstimmten, wenn
+man verschluessleung nicht nutzt aknn man selbstverstaendlich was man moechte, denn der key wird dann nicht benutzt. dann gibt man die
+anzahl der threads an die das programm nutzen soll. hierbei steht jeder thread fuer eine moegliche gleichzeitige verbindung.
+bei 200 threads kann das programm dementsperchend 200 connections gleichzeitig verwalten, bei 150 threads nur noch 150 connections,
+bei 500 threads wiederum 500 verbindungen etc... zu letzt folgt dann die angabe der logdatei. gibt man hier das wort "no" an,
+ist das speichern in eine logdatei ausgeschaltet.
